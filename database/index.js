@@ -1,9 +1,7 @@
-//import { connect, model } from 'mongoose';
-
-const { connect, model } = require('mongoose');
+import { connect, model } from 'mongoose';
 
 //'mongodb://localhost:27017/test'
-class Database {
+export default class Database {
     MessageModel = model('message', {
         userId: Number,
         userName: String,
@@ -58,5 +56,3 @@ function main() {
     const message = db.getMessageByUserId(234);
     db.close();
 }
-
-module.exports = Database;
