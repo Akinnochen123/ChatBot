@@ -9,8 +9,8 @@ const config = require('./config');
 
 
 //Connect to mongodb
-const mongoDB = config.database.mongoURI;
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+const connectDB = require('./database/index') 
+connectDB(config);
 
 // Initialize slack api
 const slackEvents = createEventAdapter(config.slack.signingSecret);

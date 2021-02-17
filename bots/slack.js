@@ -20,11 +20,9 @@ class SlackBot {
       try {
         let user = await User.findOne({ slackId: id }).exec();
   
-  
         if(user === null){
           user = new User({slackId: id, slackUsernam: username, slackName: name});
         }
-  
   
         switch (action_id) {
           case 'firstTimeSlot':
@@ -100,12 +98,19 @@ class SlackBot {
           blocks: createTimeSelectBlock()
         });
       } else if (type === 'saved times') {
-        const user = await User.findOne({ slackId: req.body.user_id }).exec();
+        try {
+          const user =await User.findOne({ slackId: req.body.user_id }).exec();
 
-        if(user === null){
-          res.send(`You do not have any saved time slots`);
+          console.log('got here')
+          if(user === null){
+            res.send(`You do not have any saved time slots`);
+          }
+          res.send(`Your saved times are, first time slot - ${user.firstTimeSlot}, second time slot - ${user.secondTimeSlot}`);
+        } catch (error) {
+          console.log('Error from /command')
+          console.log(error)
         }
-        res.send(`Your saved times are, first time slot - ${user.firstTimeSlot}, second time slot - ${user.secondTimeSlot}`);
+
       } else {
 
         res.send('Use this command followed by `hello`, `time`, or `saved times`.');
